@@ -7,7 +7,7 @@
 
   <title>Hanabira Archives</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+  <link rel="icon" type="image/png" href="{{ url_for(filename='favicon.png') }}">
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -20,7 +20,7 @@
     
     <!-- Logo and Title -->
     <div class="flex flex-col items-center mb-6">
-      <img src="{{ url_for('static', filename='logo.png') }}" alt="Hanabira Archives Logo"
+      <img src="{{ url_for(filename='logo.png') }}" alt="Hanabira Archives Logo"
            class="w-24 h-24 mb-2 rounded-full shadow-md hover:scale-105 transition-transform duration-200">
       <h1 class="text-4xl font-bold tracking-widest">Hanabira Archives</h1>
       <p class="text-sm text-gray-500 italic">Where memories blossom again.</p>
