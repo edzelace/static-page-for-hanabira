@@ -4,11 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Hanabira Archives - A collection of memorable anime and wuxia quotes.">
-
   <title>Hanabira Archives</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Favicon and Logo -->
-  <link rel="icon" type="image/png" href="static/favicon.png"> <!-- For root path (adjust for your setup) -->
+  <link rel="icon" type="image/png" href="static/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -18,10 +16,10 @@
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans">
   <div class="max-w-3xl mx-auto p-6">
-    
     <!-- Logo and Title -->
     <div class="flex flex-col items-center mb-6">
-      <img src="static/logo.png" alt="Hanabira Archives Logo" class="w-24 h-24 mb-2 rounded-full shadow-md hover:scale-105 transition-transform duration-200">
+      <img src="static/logo.png" alt="Hanabira Archives Logo"
+           class="w-24 h-24 mb-2 rounded-full shadow-md hover:scale-105 transition-transform duration-200">
       <h1 class="text-4xl font-bold tracking-widest">Hanabira Archives</h1>
       <p class="text-sm text-gray-500 italic">Where memories blossom again.</p>
     </div>
@@ -44,45 +42,55 @@
   </div>
 
   <!-- Footer -->
-<!-- Footer -->
-<footer class="fixed bottom-0 left-0 w-full bg-white border-t text-center p-4 text-sm text-gray-600">
-  © <a href="https://less-real.com" class="text-blue-500 hover:underline">less-real.com</a> · Reimagined as Hanabira Archives
-  
-    <p class="text-sm text-gray-600"><a href="/about" class="text-blue-500 hover:underline">About this site</a></p> | <a href="/submit" class="text-blue-500 hover:underline">Submit a Quote</a> 
-	<!-- hitwebcounter Code START -->
-<a href="https://www.hitwebcounter.com" target="_blank">
-<img src="https://hitwebcounter.com/counter/counter.php?page=20555407&style=0001&nbdigits=5&type=page&initCount=0" title="Counter Widget" Alt="Visit counter For Websites"   border="0" /></a>                                    
-                                    
-                                        
-                                          
-                            
-</footer>
+  <footer class="fixed bottom-0 left-0 w-full bg-white border-t text-center p-4 text-sm text-gray-600">
+    Unique visitors counter unavailable on GitHub Pages · © <a href="https://less-real.com" class="text-blue-500 hover:underline">less-real.com</a> · Reimagined as Hanabira Archives
+    <p class="text-sm text-gray-600">
+      <a href="about.html" class="text-blue-500 hover:underline">About this site</a> | 
+      <a href="submit.html" class="text-blue-500 hover:underline">Submit a Quote</a>
+    </p>
+  </footer>
 
   <!-- Scripts -->
   <script>
+    const API_BASE = 'https://animewuxia-quotes-site.onrender.com';
+
     async function getRandomQuote() {
-      try {
-        const res = await fetch('https://animewuxia-quotes-site.onrender.com/quotes/random'); <!-- Use this if you are calling the Render API -->
-        if (!res.ok) throw new Error('Failed to fetch data');
-        const data = await res.json();
-        displayQuotes([data]);
-      } catch (error) {
-        console.error(error);
-        alert('Something went wrong, please try again later.');
-      }
-    }
+  try {
+    const res = await fetch('https://animewuxia-quotes-site.onrender.com/quotes/random');  // Updated URL
+    if (!res.ok) throw new Error('Failed to fetch data');
+    const data = await res.json();
+    displayQuotes([data]);
+  } catch (error) {
+    console.error(error);
+    alert('Something went wrong, please try again later.');
+  }
+}
+
 
     async function searchQuotes() {
-      const anime = document.getElementById('anime').value;
-      const character = document.getElementById('character').value;
-      const keyword = document.getElementById('keyword').value;
-      const params = new URLSearchParams({ anime, character, keyword });
+      const anime = document.getElementById('anime').value.toLowerCase();
+      const character = document.getElementById('character').value.toLowerCase();
+      const keyword = document.getElementById('keyword').value.toLowerCase();
 
-      const res = await fetch(`https://animewuxia-quotes-site.onrender.com/quotes?${params.toString()}`); <!-- Same here for search -->
-      const data = await res.json();
-      if (data.length > 0) displayQuotes(data);
-      else {
-        document.getElementById('quote-container').innerHTML = `<div class="bg-white rounded-2xl shadow-md p-6"><p class="text-xl italic mb-4">No matching quotes found.</p></div>`;
+      const url = new URL(`${API_BASE}/quotes`);
+      if (anime) url.searchParams.append('anime', anime);
+      if (character) url.searchParams.append('character', character);
+      if (keyword) url.searchParams.append('keyword', keyword);
+
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (data.length > 0) displayQuotes(data);
+        else {
+          document.getElementById('quote-container').innerHTML = `
+            <div class="bg-white rounded-2xl shadow-md p-6">
+              <p class="text-xl italic mb-4">No matching quotes found.</p>
+            </div>`;
+        }
+      } catch (error) {
+        console.error(error);
+        alert('Failed to fetch quotes.');
       }
     }
 
@@ -100,6 +108,7 @@
       });
     }
 
+    // Load random quote on page load
     getRandomQuote();
   </script>
 </body>
