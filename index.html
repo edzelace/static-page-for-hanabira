@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home — Hanabira Archives</title>
+  <meta name="description" content="Hanabira Archives - A collection of memorable anime and wuxia quotes.">
+
+  <title>Hanabira Archives</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="icon" type="image/png" href="/static/favicon.png"> <!-- Corrected path -->
+  <!-- Favicon and Logo -->
+  <link rel="icon" type="image/png" href="/static/favicon.png"> <!-- For root path (adjust for your setup) -->
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -13,33 +16,82 @@
     }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-100 text-gray-800 font-sans">
   <div class="max-w-3xl mx-auto p-6">
-    <div class="text-center mb-8">
-      <img src="/static/logo.png" alt="Hanabira Archives Logo" class="w-20 h-20 mx-auto rounded-full shadow-md"> <!-- Corrected path -->
-      <h1 class="text-4xl font-bold mt-4">Welcome to Hanabira Archives</h1>
-      <p class="italic text-gray-500">A tribute to memories, anime, and the beauty of words.</p>
+    
+    <!-- Logo and Title -->
+    <div class="flex flex-col items-center mb-6">
+      <img src="/logo.png" alt="Hanabira Archives Logo" class="w-24 h-24 mb-2 rounded-full shadow-md hover:scale-105 transition-transform duration-200">
+      <h1 class="text-4xl font-bold tracking-widest">Hanabira Archives</h1>
+      <p class="text-sm text-gray-500 italic">Where memories blossom again.</p>
     </div>
 
-    <div class="space-y-6 text-lg leading-relaxed">
-      <p>
-        <strong>Hanabira Archives</strong> is a quiet homage to the once-beloved site <a href="https://less-real.com" class="text-blue-500 underline" target="_blank">less-real.com</a>,
-        where anime lovers gathered quotes that stirred hearts and minds. Though that site is now lost to time,
-        its legacy lives on through spreadsheets, collections, and the passion of the community.
-      </p>
-      
-      <p>
-        Feel free to explore, enjoy, and contribute quotes from your favorite anime, light novels, and more.
-      </p>
+    <!-- Search Inputs -->
+    <div class="flex flex-col md:flex-row gap-4 mb-6">
+      <input id="anime" type="text" placeholder="Filter by Anime" class="p-2 border border-gray-300 rounded-xl w-full" />
+      <input id="character" type="text" placeholder="Filter by Character" class="p-2 border border-gray-300 rounded-xl w-full" />
+      <input id="keyword" type="text" placeholder="Search by Keyword" class="p-2 border border-gray-300 rounded-xl w-full" />
     </div>
 
-    <div class="text-center mt-10">
-      <a href="submit.html" class="inline-block bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600">Submit a Quote</a>
+    <!-- Action Buttons -->
+    <div class="flex gap-4 mb-6">
+      <button onclick="getRandomQuote()" class="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600">Random Quote</button>
+      <button onclick="searchQuotes()" class="bg-green-500 text-white px-4 py-2 rounded-xl hover:bg-green-600">Search</button>
     </div>
+
+    <!-- Quote Display -->
+    <div id="quote-container" class="space-y-6"></div>
   </div>
 
-  <footer class="text-center text-sm text-gray-500 mt-10 py-4 border-t">
-    Unique visitors counter unavailable on GitHub Pages · © less-real.com · Reimagined as Hanabira Archives | <a href="about.html" class="text-blue-500 hover:underline">About</a>
+  <!-- Footer -->
+  <footer class="fixed bottom-0 left-0 w-full bg-white border-t text-center p-4 text-sm text-gray-600">
+    Unique visitors: {{ unique_visits }} · © <a href="https://less-real.com" class="text-blue-500 hover:underline">less-real.com</a> · Reimagined as Hanabira Archives
+    <p class="text-sm text-gray-600"><a href="/about" class="text-blue-500 hover:underline">About this site</a></p> | <a href="/submit" class="text-blue-500 hover:underline">Submit a Quote</a> 
   </footer>
+
+  <!-- Scripts -->
+  <script>
+    async function getRandomQuote() {
+      try {
+        const res = await fetch('https://animewuxia-quotes-site.onrender.com/quotes/random'); <!-- Use this if you are calling the Render API -->
+        if (!res.ok) throw new Error('Failed to fetch data');
+        const data = await res.json();
+        displayQuotes([data]);
+      } catch (error) {
+        console.error(error);
+        alert('Something went wrong, please try again later.');
+      }
+    }
+
+    async function searchQuotes() {
+      const anime = document.getElementById('anime').value;
+      const character = document.getElementById('character').value;
+      const keyword = document.getElementById('keyword').value;
+      const params = new URLSearchParams({ anime, character, keyword });
+
+      const res = await fetch(`https://animewuxia-quotes-site.onrender.com/quotes?${params.toString()}`); <!-- Same here for search -->
+      const data = await res.json();
+      if (data.length > 0) displayQuotes(data);
+      else {
+        document.getElementById('quote-container').innerHTML = `<div class="bg-white rounded-2xl shadow-md p-6"><p class="text-xl italic mb-4">No matching quotes found.</p></div>`;
+      }
+    }
+
+    function displayQuotes(quotes) {
+      const container = document.getElementById('quote-container');
+      container.innerHTML = '';
+      quotes.forEach((quote) => {
+        const div = document.createElement('div');
+        div.className = 'bg-white rounded-2xl shadow-md p-6';
+        div.innerHTML = `
+          <p class="text-xl italic mb-4">"${quote.quote}"</p>
+          <p class="text-right text-sm text-gray-500">- ${quote.character} (${quote.anime})</p>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    getRandomQuote();
+  </script>
 </body>
 </html>
