@@ -27,6 +27,7 @@
   </style>
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans">
+
   <div class="max-w-3xl mx-auto p-6">
     
     <!-- Logo and Title -->
@@ -35,11 +36,6 @@
       <h1 class="text-4xl font-bold tracking-widest">Hanabira Archives</h1>
       <p class="text-sm text-gray-500 italic">Where memories blossom again.</p>
     </div>
-
-    <!-- Dark Mode Toggle -->
-    <button id="darkModeToggle" class="bg-blue-500 text-white p-2 rounded-lg mb-4">
-      Toggle Dark Mode
-    </button>
 
     <!-- Search Inputs -->
     <div class="flex flex-col md:flex-row gap-4 mb-6">
@@ -83,6 +79,11 @@
     
     <span> · © <a href="https://less-real.com" class="text-blue-500 hover:underline">less-real.com</a> · Reimagined as Hanabira Archives</span>
   </footer>
+
+  <!-- Dark Mode Toggle Button (Positioned at Bottom Right) -->
+  <button id="darkModeToggle" class="fixed bottom-6 right-6 bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600">
+    Toggle Dark Mode
+  </button>
 
   <!-- Scripts -->
   <script>
