@@ -7,7 +7,7 @@
 
   <title>Hanabira Archives</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="icon" type="image/png" href="{{ url_for(filename='favicon.png') }}">
+  <link rel="icon" type="image/png" href="/favicon.png"> <!-- Updated path to root -->
   <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -20,7 +20,7 @@
     
     <!-- Logo and Title -->
     <div class="flex flex-col items-center mb-6">
-      <img src="{{ url_for(filename='logo.png') }}" alt="Hanabira Archives Logo"
+      <img src="/logo.png" alt="Hanabira Archives Logo"  <!-- Updated path to root -->
            class="w-24 h-24 mb-2 rounded-full shadow-md hover:scale-105 transition-transform duration-200">
       <h1 class="text-4xl font-bold tracking-widest">Hanabira Archives</h1>
       <p class="text-sm text-gray-500 italic">Where memories blossom again.</p>
@@ -47,24 +47,22 @@
   <!-- Footer -->
   <footer class="fixed bottom-0 left-0 w-full bg-white border-t text-center p-4 text-sm text-gray-600">
     Unique visitors: {{ unique_visits }} · © <a href="https://less-real.com" class="text-blue-500 hover:underline">less-real.com</a> · Reimagined as Hanabira Archives
-	  <p class="text-sm text-gray-600"><a href="{{ url_for('about') }}" class="text-blue-500 hover:underline">About this site</a></p> | <a href="{{ url_for('submit') }}" class="text-blue-500 hover:underline">Submit a Quote</a> 
-
+    <p class="text-sm text-gray-600"><a href="/about" class="text-blue-500 hover:underline">About this site</a></p> | <a href="/submit" class="text-blue-500 hover:underline">Submit a Quote</a> 
   </footer>
 
   <!-- Scripts -->
   <script>
     async function getRandomQuote() {
-  try {
-    const res = await fetch('/quotes/random');
-    if (!res.ok) throw new Error('Failed to fetch data');
-    const data = await res.json();
-    displayQuotes([data]);
-  } catch (error) {
-    console.error(error);
-    alert('Something went wrong, please try again later.');
-  }
-}
-
+      try {
+        const res = await fetch('https://animewuxia-quotes-site.onrender.com/quotes/random'); <!-- Updated to use Render API URL -->
+        if (!res.ok) throw new Error('Failed to fetch data');
+        const data = await res.json();
+        displayQuotes([data]);
+      } catch (error) {
+        console.error(error);
+        alert('Something went wrong, please try again later.');
+      }
+    }
 
     async function searchQuotes() {
       const anime = document.getElementById('anime').value;
@@ -72,7 +70,7 @@
       const keyword = document.getElementById('keyword').value;
       const params = new URLSearchParams({ anime, character, keyword });
 
-      const res = await fetch(`/quotes?${params.toString()}`);
+      const res = await fetch(`https://animewuxia-quotes-site.onrender.com/quotes?${params.toString()}`); <!-- Updated to use Render API URL -->
       const data = await res.json();
       if (data.length > 0) displayQuotes(data);
       else {
